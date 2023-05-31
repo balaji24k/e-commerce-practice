@@ -10,9 +10,17 @@ const Footer = () => {
                 </Col>
                 
                 <Col className="col-5 m-3">
-                    <img className={classes.images} src="https://prasadyash2411.github.io/ecom-website/img/6260efc8fc9a9002669d2f4ad9956cc0.jpg" alt="Not Loaded" />
-                    <img className={classes.images} src="https://prasadyash2411.github.io/ecom-website/img/Spotify%20Logo.png" alt="Not Loaded"/>
-                    <img className={classes.images} src="https://prasadyash2411.github.io/ecom-website/img/Facebook%20Logo.png" alt="Not Loaded" />
+                    <a href="https://www.youtube.com/">
+                        <img className={classes.images} src="https://prasadyash2411.github.io/ecom-website/img/6260efc8fc9a9002669d2f4ad9956cc0.jpg" alt="Not Loaded" />
+                    </a>
+                    
+                    <a href="https://open.spotify.com/">
+                        <img className={classes.images} src="https://prasadyash2411.github.io/ecom-website/img/Spotify%20Logo.png" alt="Not Loaded"/>
+                    </a>
+
+                    <a href="https://www.facebook.com/">
+                        <img className={classes.images} src="https://prasadyash2411.github.io/ecom-website/img/Facebook%20Logo.png" alt="Not Loaded" />
+                    </a>
                 </Col>
                     
         </Navbar>

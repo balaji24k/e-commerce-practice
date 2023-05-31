@@ -1,0 +1,13 @@
+
+.header {
+    text-align: center;
+}
+
+.cart {
+    padding: 20px;
+    margin: 100px auto 20px auto;
+    display: block;
+    background: rgb(177, 161, 240);
+    width: 500px;
+}
+
