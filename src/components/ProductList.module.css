@@ -1,0 +1,37 @@
+.heading {
+    margin-top: 50px;
+    color: white;
+    background: purple;
+    padding: 0 0 50px 0;
+    text-align: center;
+    font-size: 50px;
+    font-weight: bolder;
+}
+
+.item {
+    font-weight: 300;
+    color: rgb(1, 1, 33);
+    padding: 10px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 40px;
+}
+
+.childItem {
+    padding: 10px;
+    width: 300px;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.productBox {
+    margin-bottom: 70px;
+}
+
+.cartBtn {
+    margin : 0 0 50px 50%;
+    translate: -50%;
+}

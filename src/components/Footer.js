@@ -1,0 +1,22 @@
+import { Col, Navbar } from "react-bootstrap";
+import classes from "./Footer.module.css"
+
+const Footer = () => {
+    return (
+        <Navbar fixed="bottom" bg="primary" variant="dark">
+                
+                <Col className="col-7" style={{textAlign:"center", color:"white"}}>
+                    <h1>The Generics</h1>
+                </Col>
+                
+                <Col className="col-5 m-3">
+                    <img className={classes.images} src="https://prasadyash2411.github.io/ecom-website/img/6260efc8fc9a9002669d2f4ad9956cc0.jpg" alt="Not Loaded" />
+                    <img className={classes.images} src="https://prasadyash2411.github.io/ecom-website/img/Spotify%20Logo.png" alt="Not Loaded"/>
+                    <img className={classes.images} src="https://prasadyash2411.github.io/ecom-website/img/Facebook%20Logo.png" alt="Not Loaded" />
+                </Col>
+                    
+        </Navbar>
+    )
+}
+
+export default Footer;
