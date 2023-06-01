@@ -4,10 +4,11 @@ import Footer from './components/Footer';
 import NavBar from "./components/NavBar";
 import ProductList from "./components/ProductList";
 import { Switch, Route } from 'react-router-dom';
+import CartProvider from './store/CartProvider';
 
 function App() {
   return (
-    <div>
+    <CartProvider>
       <NavBar/>
       <Switch>
         <Route exact path="/">
@@ -17,10 +18,8 @@ function App() {
           <Cart/>
         </Route>
       </Switch>
-
-      
       <Footer/>
-    </div>
+    </CartProvider>
   );
 }
 

@@ -1,5 +1,8 @@
 import { Button, Col, Container, Row } from "react-bootstrap";
 import classes from "./ProductList.module.css"
+import { useContext } from "react";
+import CartContext from "../store/CartContext";
+import { NavLink } from "react-router-dom";
 
 const ProductList = () => {
 
@@ -38,6 +41,7 @@ const ProductList = () => {
         },
     ];
 
+    const cartCtx = useContext(CartContext);
 
     return (
         <div>
@@ -46,19 +50,21 @@ const ProductList = () => {
             <Container style={{width:"800px"}} className={classes.productBox}>
                 <Row>
                 {products.map( product => (
-                    <Col className="col-6">
+                    <Col key={product.title} className="col-6">
                             <div className={classes.item}>
                                 <h4>{product.title}</h4>
                                 <img width="250px" src={product.imageUrl} alt="Not Loaded"/>
                                 <div className={classes.childItem}>
                                     <h5>${product.price}</h5>
-                                    <Button variant="success">Add to cart </Button>
+                                    <Button onClick={cartCtx.addtoCart.bind(null, product)} variant="success">Add to cart </Button>
                                 </div>
                             </div>
                     </Col>
                     ))}
                 </Row>
-                <Button  className={classes.cartBtn} variant="dark">See To Cart</Button>
+                <NavLink to="/cart">
+                  <Button className={classes.cartBtn} variant="dark">See To Cart</Button>
+                </NavLink>
             </Container>
         </div>
     )
