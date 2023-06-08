@@ -5,6 +5,8 @@ import NavBar from "./components/NavBar";
 import ProductList from "./components/ProductList";
 import { Switch, Route } from 'react-router-dom';
 import CartProvider from './store/CartProvider';
+import SignUpPage from './components/SignUpPage';
+import LoginPage from './components/LoginPage';
 
 function App() {
   return (
@@ -13,6 +15,12 @@ function App() {
       <Switch>
         <Route exact path="/">
           <ProductList/>
+        </Route>
+        <Route exact path="/signup">
+          <SignUpPage/>
+        </Route>
+        <Route exact path="/login">
+          <LoginPage/>
         </Route>
         <Route exact path="/cart">
           <Cart/>
