@@ -2,50 +2,17 @@
  import classes from "./Cart.module.css"
 import { useContext } from "react";
 import CartContext from "../store/CartContext";
-
-// const cartItems = [
-//     {
-    
-//     title: 'Colors',
-    
-//     price: 100,
-    
-//     imageUrl: 'https://prasadyash2411.github.io/ecom-website/img/Album%201.png',
-    
-//     quantity: 2,
-    
-//     },
-    
-//     {
-    
-//     title: 'Black and white Colors',
-    
-//     price: 50,
-    
-//     imageUrl: 'https://prasadyash2411.github.io/ecom-website/img/Album%202.png',
-    
-//     quantity: 3,
-    
-//     },
-    
-//     {
-    
-//     title: 'Yellow and Black Colors',
-    
-//     price: 70,
-    
-//     imageUrl: 'https://prasadyash2411.github.io/ecom-website/img/Album%203.png',
-    
-//     quantity: 1,
-    
-//     }
-    
-//     ]
-
+ 
 const Cart = () => {
     const cartCtx = useContext(CartContext);
-    console.log(cartCtx.cartItems,"in cart 47");
+    console.log(cartCtx.cartItems,"cartItems in cart");
+
+    const totalPrice = cartCtx.cartItems.reduce((totalPrice,item) => {
+        return totalPrice + item.price*item.quantity;
+    },0);
+
     const hasItems = cartCtx.cartItems.length>0;
+    
     return (
         <div className={classes.cart} >  
             <h3 className={classes.header}>Cart Items</h3>
@@ -81,7 +48,7 @@ const Cart = () => {
 
             </Table>)}
             {!hasItems && <h5 className={classes.header}>No Items Added</h5>}
-            {hasItems && <h5 className={classes.header} >Total Price: {cartCtx.totalPrice} </h5>}
+            {hasItems && <h5 className={classes.header} >Total Price: {totalPrice} </h5>}
         </div>
       
     );
