@@ -43,7 +43,7 @@ const LoginPage = () => {
         if (res.ok) {
           console.log("Login succesfullly");
           alert("Login succesful");
-          history.replace("/");
+          history.replace("/store");
           return res.json();
         } 
         else {

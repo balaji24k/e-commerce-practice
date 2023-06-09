@@ -7,7 +7,8 @@ const CartContext = React.createContext({
     removeFromCart : () => {},
     login : () => {},
     logout : () => {},
-    isLoggedin : false
+    isLoggedin : false,
+    userEmail : ""
 })
 
 export default CartContext

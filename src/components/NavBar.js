@@ -5,7 +5,8 @@ import CartContext from "../store/CartContext";
 
 const NavBar = () => {
 
-    const cartCtx = useContext(CartContext)
+    const cartCtx = useContext(CartContext);
+    // console.log(cartCtx.isLoggedin,"isLooged in navbar comp")
 
     const totalQuantity = cartCtx.cartItems.reduce((sum,curr)=>{
         return sum+curr.quantity
@@ -30,13 +31,19 @@ const NavBar = () => {
                 )}
             
                 {cartCtx.isLoggedin && (<>
-                    <Col className="col-4"></Col>
+                    <Col className="col-4">
+                        <h4 style={{color:"white", marginLeft:"50px"}} >User : {cartCtx.userEmail}</h4>
+                    </Col>
                     <Col className="col-6">
-                        <Navbar.Brand className="m-5" href="#">HOME</Navbar.Brand>
-                        <NavLink to="/" >
+                        <NavLink to="/home" >
+                            <Navbar.Brand className="m-5">HOME</Navbar.Brand>
+                        </NavLink>
+                        <NavLink to="/store" >
                             <Navbar.Brand className="m-5">STORE</Navbar.Brand>
                         </NavLink>
-                        <Navbar.Brand className="m-5" href="#">ABOUT</Navbar.Brand>
+                        <NavLink to="/about" >
+                            <Navbar.Brand className="m-5">ABOUT</Navbar.Brand>
+                        </NavLink>
                     </Col>
                     <Col className="col-1">
                         <NavLink to="/cart" >

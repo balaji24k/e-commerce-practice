@@ -65,6 +65,8 @@ const CartProvider = (props) => {
             updatedCart = [...cartItems]
             updatedCart[itemIndex] = updatedItem;
 
+            setcartItems(updatedCart);
+
             console.log("existingItem:",existingItem.id);
 
             const response = await fetch(`https://react-practice-a3750-default-rtdb.firebaseio.com/${loggedInEmail}/${existingItem.id}.json`,{
@@ -89,14 +91,14 @@ const CartProvider = (props) => {
             })
 
             const data = await response.json();
-            console.log(data,"afterPosting")
+            console.log(data,"afterPosting");
 
             const updatedItem = {...newItem, id : data.name };
 
             updatedCart = [...cartItems,updatedItem]
-
+            setcartItems(updatedCart);
         }
-        setcartItems(updatedCart);
+        
     };
 
     const removeFromCartHandler = async (product) => {
@@ -108,7 +110,7 @@ const CartProvider = (props) => {
         let updatedCart;
         if (product.quantity === 1) {
             updatedCart = cartItems.filter(item => item.title !== product.title);
-
+            setcartItems(updatedCart);
             const response = await fetch(`https://react-practice-a3750-default-rtdb.firebaseio.com/${loggedInEmail}/${item.id}.json`,{
                 method : "Delete"
             })
@@ -124,6 +126,7 @@ const CartProvider = (props) => {
 
             updatedCart = [...cartItems];
             updatedCart[itemIndex] = updatedItem;
+            setcartItems(updatedCart);
 
             const response = await fetch(`https://react-practice-a3750-default-rtdb.firebaseio.com/${loggedInEmail}/${item.id}.json`,{
                 method : "PUT",
@@ -137,7 +140,7 @@ const CartProvider = (props) => {
             console.log(data,"afterDecreseQuantity")
 
         }
-        setcartItems(updatedCart)
+        
     };
 
 
