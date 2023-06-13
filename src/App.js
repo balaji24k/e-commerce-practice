@@ -3,7 +3,7 @@ import Cart from './components/Cart';
 import Footer from './components/Footer';
 import NavBar from "./components/NavBar";
 import ProductList from "./components/ProductList";
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route, Redirect, useHistory } from 'react-router-dom';
 import SignUpPage from './components/SignUpPage';
 import LoginPage from './components/LoginPage';
 import { useContext } from 'react';
@@ -21,7 +21,7 @@ function App() {
       <NavBar/>
       <Switch>
         <Route exact path="/">
-          {authCtx.isLoggedin && <Redirect to="/home" />}
+          {authCtx.isLoggedin && <Redirect to="/store" />}
           {!authCtx.isLoggedin && <Redirect to="/login" />}
         </Route>
         <Route exact path="/home">
