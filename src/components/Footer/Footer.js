@@ -4,16 +4,15 @@ import classes from "./Footer.module.css"
 const Footer = () => {
     return (
         <Navbar fixed="bottom" bg="primary" variant="dark">
-                
-                <Col className="col-7" style={{textAlign:"center", color:"white"}}>
-                    <h1>The Generics</h1>
+                <Col className="col-7">
+                    <h1 className={classes.heading} >The Generics</h1>
                 </Col>
                 
                 <Col className="col-5 m-3">
                     <a href="https://www.youtube.com/">
                         <img className={classes.images} src="https://prasadyash2411.github.io/ecom-website/img/6260efc8fc9a9002669d2f4ad9956cc0.jpg" alt="Not Loaded" />
                     </a>
-                    
+         
                     <a href="https://open.spotify.com/">
                         <img className={classes.images} src="https://prasadyash2411.github.io/ecom-website/img/Spotify%20Logo.png" alt="Not Loaded"/>
                     </a>

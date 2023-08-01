@@ -1,0 +1,39 @@
+.box {
+    margin: 150px auto;
+    width: 35rem;
+    background-size: cover;
+    padding: 25px;
+    text-align: left;
+    background-color: rgb(32, 2, 88);
+    border-radius: 20px;
+  }
+  .box h1 {
+    color: white;
+    text-align: center;
+  }
+
+  .spinner_container {
+    display: inline-block;
+    position: relative;
+  }
+  
+  .spinner_dot {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 10px;
+    height: 10px;
+    margin: 2px;
+    border-radius: 50%;
+    background-color: #000;
+    animation: spinner 1s infinite alternate;
+  }
+  
+  @keyframes spinner {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0.3;
+    }
+  }

@@ -2,13 +2,10 @@ import React from "react"
 
 const CartContext = React.createContext({
     cartItems : [],
-    totalPrice : 0,
     addtoCart : () => {},
     removeFromCart : () => {},
-    login : () => {},
-    logout : () => {},
-    isLoggedin : false,
-    userEmail : ""
+    isAddingToCart : false,
+    checkOutHandler : () => {}
 })
 
-export default CartContext
+export default CartContext;

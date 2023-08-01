@@ -1,0 +1,16 @@
+.navlink {
+    text-decoration: none;
+    color: inherit;
+    font-size:large;
+}
+
+.navlink:hover {
+    color: inherit;
+    text-decoration: none;
+}
+
+.activeLink {
+    background-color: red;
+    padding: 4px 8px;
+    border-radius: 4px;
+}

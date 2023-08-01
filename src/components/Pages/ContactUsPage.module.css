@@ -1,0 +1,15 @@
+.header {
+    text-align: center;
+    font-family: serif;
+    font-weight: bold;
+}
+
+
+.box {
+    width: 600px;
+    margin: 100px auto;
+    background: rgb(248, 224, 86);
+    padding: 20px;
+    border-radius: 20px;
+    font-weight: bold;
+}

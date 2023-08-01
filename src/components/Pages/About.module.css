@@ -1,0 +1,15 @@
+.box {
+    background: yellow;
+    display: block;
+    width: 1200px;
+    margin: auto;
+    padding: 10px;
+    margin: 100px auto 30px auto;
+    border-radius: 20px;
+}
+
+.header {
+    font-family: serif;
+    font-weight: bold;
+    text-align: center;
+}

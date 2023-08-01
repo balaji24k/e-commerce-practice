@@ -2,74 +2,50 @@ import { useEffect, useState } from "react";
 import CartContext from "./CartContext";
 
 const CartProvider = (props) => {
-
     const [cartItems,setcartItems] = useState([]);
-    // const [totalPrice, setTotalPrice] = useState(0);
+    const [isAddingToCart,setIsAddingToCart] = useState(false);
 
-    const [userEmail,setUserEmail] = useState(localStorage.getItem("email"));
-    const [token,setToken] = useState(localStorage.getItem("token"));
+    const userEmail = localStorage.getItem("email");
+    let userName = userEmail && userEmail.split("@")[0];
+    // console.log(userName,"userName in cartprovider")
 
-    let loggedInEmail;
-    if (userEmail) {
-        loggedInEmail = userEmail.replace(/[@.]/g,"");
-    }
-    const isLoggedin = !!token;
-
-    const loginHandler = (token,email) => {
-        setToken(token);
-        setUserEmail(email);
-        localStorage.setItem("token",token);
-        localStorage.setItem("email",email);
-    }
-
-    const logoutHandler = () => {
-        setToken(null);
-        setUserEmail(null);
-        localStorage.removeItem("token");
-        localStorage.removeItem("email");
-        alert("Logged out")
-    }
+    const url = `https://react-projects-aaebd-default-rtdb.firebaseio.com/e-commerce/${userName}`
 
     useEffect( () => {
         const getDetails = async() => {
-            const response = await fetch(`https://react-practice-a3750-default-rtdb.firebaseio.com/${loggedInEmail}.json`)
+            const response = await fetch(`${url}.json`)
             const data = await response.json();
-            console.log(data, "after refreshed");
-
             const loadedProducts = []
-            for (const key in data) {
-                loadedProducts.push(data[key])
-                // console.log(data[key],"inLoop")
+            for (const id in data) {
+                loadedProducts.push({id,...data[id]})
             }
-            console.log(loadedProducts,"outLoop")
             setcartItems(loadedProducts);
         }
         getDetails();
 
-    }, [loggedInEmail])
+    }, [userEmail,url])
 
     
     const addtoCartHandler = async (product) => {
-        // setTotalPrice(totalPrice + product.price)
-        const itemIndex = cartItems.findIndex(item => item.title === product.title);
-        const existingItem = cartItems[itemIndex]; 
-        // console.log(existingItem,"existing");
+        setIsAddingToCart(product.title);
+        const existingCartItemIndex = cartItems.findIndex(item => item.title === product.title);
+        const existingCartItem = cartItems[existingCartItemIndex]; 
+
+        console.log(product,"product");
+        console.log(existingCartItem,"existingCartItem");
         
         let updatedCart;
-        if (existingItem) {
+        if (existingCartItem) {
             const updatedItem = {
-                ...existingItem,
-                quantity : existingItem.quantity + 1
+                ...existingCartItem,
+                quantity : existingCartItem.quantity + 1
             }
 
             updatedCart = [...cartItems]
-            updatedCart[itemIndex] = updatedItem;
-
+            updatedCart[existingCartItemIndex] = updatedItem;
             setcartItems(updatedCart);
 
-            console.log("existingItem:",existingItem.id);
-
-            const response = await fetch(`https://react-practice-a3750-default-rtdb.firebaseio.com/${loggedInEmail}/${existingItem.id}.json`,{
+            const response = await fetch(`${url}/${existingCartItem.id}.json`,{
                 method : "PUT",
                 body : JSON.stringify(updatedItem), 
                 headers : {
@@ -77,12 +53,13 @@ const CartProvider = (props) => {
                 }
             })
             const data = await response.json();
-            console.log(data,"afterIncresingQuantity")
+            console.log(data,"afterIncresingQuantity");
         }
 
         else{
+
             const newItem = {...product,quantity:1}
-            const response = await fetch(`https://react-practice-a3750-default-rtdb.firebaseio.com/${loggedInEmail}.json`,{
+            const response = await fetch(`${url}.json`,{
                 method : "POST",
                 body : JSON.stringify(newItem),
                 headers : {
@@ -98,20 +75,20 @@ const CartProvider = (props) => {
             updatedCart = [...cartItems,updatedItem]
             setcartItems(updatedCart);
         }
-        
+        setIsAddingToCart(null);
     };
 
     const removeFromCartHandler = async (product) => {
-        // setTotalPrice(totalPrice - product.price);
 
         const itemIndex = cartItems.findIndex(item => item.title === product.title);
         const item = cartItems[itemIndex];
+        console.log(item,"item in delete")
 
         let updatedCart;
-        if (product.quantity === 1) {
+        if (item.quantity === 1) {
             updatedCart = cartItems.filter(item => item.title !== product.title);
             setcartItems(updatedCart);
-            const response = await fetch(`https://react-practice-a3750-default-rtdb.firebaseio.com/${loggedInEmail}/${item.id}.json`,{
+            const response = await fetch(`${url}/${item.id}.json`,{
                 method : "Delete"
             })
             const data = await response.json();
@@ -128,31 +105,33 @@ const CartProvider = (props) => {
             updatedCart[itemIndex] = updatedItem;
             setcartItems(updatedCart);
 
-            const response = await fetch(`https://react-practice-a3750-default-rtdb.firebaseio.com/${loggedInEmail}/${item.id}.json`,{
+            const response = await fetch(`${url}/${item.id}.json`,{
                 method : "PUT",
                 body : JSON.stringify(updatedItem), 
                 headers : {
                     'Content-Type' : 'application/json'
                 }
             })
-
             const data = await response.json();
             console.log(data,"afterDecreseQuantity")
-
         }
-        
     };
 
+    const checkOutHandler = () => {
+        setcartItems([]);
+        fetch(`${url}.json`,{
+            method : "Delete"
+        });
+        alert("Order Placed Succefully");
+
+    }
 
     const obj = {
         cartItems : cartItems,
-        // totalPrice : totalPrice,
         addtoCart : addtoCartHandler,
         removeFromCart : removeFromCartHandler,
-        login : loginHandler,
-        logout : logoutHandler,
-        userEmail : userEmail,
-        isLoggedin : isLoggedin
+        isAddingToCart : isAddingToCart,
+        checkOutHandler : checkOutHandler
     }
 
     return (

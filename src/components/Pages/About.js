@@ -1,17 +1,13 @@
+import classes from "./About.module.css";
 const About = () => {
+  console.log(classes,"classes");
     return (
-      <div>
-        <h2
-          className="text-center mt-3"
-          style={{ fontFamily: "serif", fontWeight: "bold" }}
-        >
-          ABOUT
-        </h2>
-        <p className="d-flex p-5 me-5 ms-5 mt-5 text-white">
+      <div className={classes.box} > 
+        <h2 className={classes.header} >ABOUT</h2>
+        <p className="d-flex p-5 me-5 ms-5 mt-3 fw-bold">
           <img
-      
             style={{ width: "250px"}}
-            className="img-fluid rounded-circle me-2"
+            className="img-fluid rounded-circle me-3"
             src="https://prasadyash2411.github.io/ecom-website/img/Band%20Members.png"
             alt="music"
           />
