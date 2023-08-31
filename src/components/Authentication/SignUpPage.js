@@ -35,7 +35,7 @@ const SignUpPage = () => {
       alert("Password and confirm password must match");
     } else {
       fetch(
-        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAL0G6pWurs04AgANQC86y9RqLTit1CQP4",
+        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCHSKu9D7nHr91P9s6pTOnfc9y7TeEuxlw",
         {
           method: "POST",
           body: JSON.stringify({
@@ -70,74 +70,79 @@ const SignUpPage = () => {
     confirmpasswordInputRef.current.value = "";
   };
   return (
-    <section className={classes.box}>
-      <h1>SignUp</h1>
-      <Form onSubmit={submitHandler}>
-        <Form.Group className="mb-3">
-          <Form.Label style={{ color: "white" }}>Email</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Email"
-            required
-            ref={emailInpurRef}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label style={{ color: "white" }}>Password</Form.Label>
-          <div className="input-group">
+    <>
+      <h5 className={classes.desclaimer}>
+        Disclaimer: This is a demo website and is for Education purposes only.
+      </h5>
+      <section className={classes.box}>
+        <h1>SignUp</h1>
+        <Form onSubmit={submitHandler}>
+          <Form.Group className="mb-3">
+            <Form.Label style={{ color: "white" }}>Email</Form.Label>
             <Form.Control
-              type={showPassword ? "text" : "password"}
-              placeholder="Password"
-              ref={passwordInputRef}
-            />
-            <Button
-              className="input-group-append"
-              onClick={showPasswordHandler}
-            >
-              {showPassword ? <BsEyeSlash /> : <BsEye />}
-            </Button>
-          </div>
-        </Form.Group>
-
-        <Form.Group className="mb-3 ">
-          <Form.Label style={{ color: "white" }}>Confirm Password</Form.Label>
-          <div className="input-group">
-            <Form.Control
-              type={showConfirmPassword ? "text" : "password"}
-              placeholder="Confirm Password"
-              ref={confirmpasswordInputRef}
+              type="text"
+              placeholder="Email"
               required
+              ref={emailInpurRef}
             />
-            <Button
-              className="input-group-append"
-              onClick={showConfirmPasswordHandler}
-            >
-              {showConfirmPassword ? <BsEyeSlash /> : <BsEye />}
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label style={{ color: "white" }}>Password</Form.Label>
+            <div className="input-group">
+              <Form.Control
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                ref={passwordInputRef}
+              />
+              <Button
+                className="input-group-append"
+                onClick={showPasswordHandler}
+              >
+                {showPassword ? <BsEyeSlash /> : <BsEye />}
+              </Button>
+            </div>
+          </Form.Group>
+
+          <Form.Group className="mb-3 ">
+            <Form.Label style={{ color: "white" }}>Confirm Password</Form.Label>
+            <div className="input-group">
+              <Form.Control
+                type={showConfirmPassword ? "text" : "password"}
+                placeholder="Confirm Password"
+                ref={confirmpasswordInputRef}
+                required
+              />
+              <Button
+                className="input-group-append"
+                onClick={showConfirmPasswordHandler}
+              >
+                {showConfirmPassword ? <BsEyeSlash /> : <BsEye />}
+              </Button>
+            </div>
+            {/* <Form.Control
+              type="password"
+              placeholder="Confirm Password"
+              required
+              ref={confirmpasswordInputRef}
+            /> */}
+          </Form.Group>
+
+          <div>
+            <Button variant="success pl-2" type="submit">
+              Create Account
             </Button>
           </div>
-          {/* <Form.Control
-            type="password"
-            placeholder="Confirm Password"
-            required
-            ref={confirmpasswordInputRef}
-          /> */}
-        </Form.Group>
-
-        <div>
-          <Button variant="success pl-2" type="submit">
-            Create Account
-          </Button>
-        </div>
-        <Nav>
-          <NavLink
-            to="/login"
-            style={{ color: "white", paddingTop: "1rem" }}
-          >
-            Have an Account?
-          </NavLink>
-        </Nav>
-      </Form>
-    </section>
+          <Nav>
+            <NavLink
+              to="/login"
+              style={{ color: "white", paddingTop: "1rem" }}
+            >
+              Have an Account?
+            </NavLink>
+          </Nav>
+        </Form>
+      </section>
+    </>
   );
 };
 export default SignUpPage;

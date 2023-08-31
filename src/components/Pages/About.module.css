@@ -2,9 +2,8 @@
     background: yellow;
     display: block;
     width: 1200px;
-    margin: auto;
     padding: 10px;
-    margin: 100px auto 30px auto;
+    margin: 100px auto 10px auto;
     border-radius: 20px;
 }
 

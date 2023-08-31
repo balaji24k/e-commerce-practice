@@ -9,7 +9,7 @@ const CartProvider = (props) => {
     let userName = userEmail && userEmail.split("@")[0];
     // console.log(userName,"userName in cartprovider")
 
-    const url = `https://react-projects-aaebd-default-rtdb.firebaseio.com/e-commerce/${userName}`
+    const url = `https://sep-2023-2c086-default-rtdb.firebaseio.com/e-commerce/${userName}`
 
     useEffect( () => {
         const getDetails = async() => {
@@ -27,12 +27,9 @@ const CartProvider = (props) => {
 
     
     const addtoCartHandler = async (product) => {
-        setIsAddingToCart(product.title);
-        const existingCartItemIndex = cartItems.findIndex(item => item.title === product.title);
-        const existingCartItem = cartItems[existingCartItemIndex]; 
-
-        console.log(product,"product");
-        console.log(existingCartItem,"existingCartItem");
+        console.log(product,"prod in add")
+        const existingCartItemIndex = cartItems.findIndex(item => item.prodId === product.prodId);
+        const existingCartItem = cartItems[existingCartItemIndex];
         
         let updatedCart;
         if (existingCartItem) {
@@ -45,48 +42,46 @@ const CartProvider = (props) => {
             updatedCart[existingCartItemIndex] = updatedItem;
             setcartItems(updatedCart);
 
-            const response = await fetch(`${url}/${existingCartItem.id}.json`,{
+            fetch(`${url}/${existingCartItem.id}.json`,{
                 method : "PUT",
                 body : JSON.stringify(updatedItem), 
                 headers : {
                     'Content-Type' : 'application/json'
                 }
             })
-            const data = await response.json();
-            console.log(data,"afterIncresingQuantity");
         }
 
         else{
-
+            setIsAddingToCart(product.prodId);
             const newItem = {...product,quantity:1}
-            const response = await fetch(`${url}.json`,{
+            fetch(`${url}.json`,{
                 method : "POST",
                 body : JSON.stringify(newItem),
                 headers : {
                     'Content-Type' : 'application/json'
                 }
             })
-
-            const data = await response.json();
-            console.log(data,"afterPosting");
-
-            const updatedItem = {...newItem, id : data.name };
-
-            updatedCart = [...cartItems,updatedItem]
-            setcartItems(updatedCart);
+            .then(response => {
+                return response.json()    
+            })
+            .then(data => {
+                const updatedItem = {...newItem, id : data.name };
+                updatedCart = [...cartItems,updatedItem]
+                setcartItems(updatedCart);
+                setIsAddingToCart(null);
+            })
         }
-        setIsAddingToCart(null);
     };
 
     const removeFromCartHandler = async (product) => {
 
-        const itemIndex = cartItems.findIndex(item => item.title === product.title);
+        const itemIndex = cartItems.findIndex(item => item.prodId === product.prodId);
         const item = cartItems[itemIndex];
-        console.log(item,"item in delete")
+        // console.log(item,"item in delete")
 
         let updatedCart;
         if (item.quantity === 1) {
-            updatedCart = cartItems.filter(item => item.title !== product.title);
+            updatedCart = cartItems.filter(item => item.prodId !== product.prodId);
             setcartItems(updatedCart);
             const response = await fetch(`${url}/${item.id}.json`,{
                 method : "Delete"
@@ -118,11 +113,15 @@ const CartProvider = (props) => {
     };
 
     const checkOutHandler = () => {
+        if (cartItems.length === 0) {
+            alert("No items added, Add items to place Order.");
+            return;
+        }
         setcartItems([]);
         fetch(`${url}.json`,{
             method : "Delete"
         });
-        alert("Order Placed Succefully");
+        alert("Order Placed Succefully.");
 
     }
 

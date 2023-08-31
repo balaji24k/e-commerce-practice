@@ -11,18 +11,17 @@ import Home from './components/Pages/Home';
 import About from './components/Pages/About';
 import AuthContext from './store/AuthContext';
 import ContactUsPage from './components/Pages/ContacUsPage';
+import ProductDetails from './components/Pages/ProductDetails';
 
 function App() {
 
   const authCtx = useContext(AuthContext);
   const [showCart, setShowCart] = useState(false);
-
+    
   const showCartHandler = () => {
-    console.log("inShowHandler")
     setShowCart(true)
   };
   const hideCartHandler = () => {
-    console.log("inHideHandler")
     setShowCart(false)
   };
 
@@ -36,38 +35,42 @@ function App() {
         />
       }
       <Switch>
-        {authCtx.isLoggedin && 
-          <>
-            <Route exact path="/home">
-                <Home />
-            </Route>
-            <Route exact path="/store">
-              <ProductList showCartHandler={showCartHandler}/>
-            </Route>
-            <Route exact path="/about">
-              <About/>
-            </Route>
-            <Route exact path="/contact">
-              <ContactUsPage/>
-            </Route>
-            <Route exact path = "/">
-              <Redirect to="/store"/>
-            </Route>
-          </>
-        }
-        {!authCtx.isLoggedin && ( 
-        <>
-          <Route exact path="/signup">
-            <SignUpPage/>
-          </Route>
-          <Route exact path="/login">
-            <LoginPage/>
-          </Route>
-          <Route path="/">
-            <Redirect to="/login"/>
-          </Route>
-        </>
-        )}
+        <Route exact path="/home">
+          {authCtx.isLoggedin && <Home />}
+          {!authCtx.isLoggedin && <Redirect to="/login"/>}
+        </Route>
+        <Route exact path="/store">
+          {authCtx.isLoggedin && <ProductList showCartHandler={showCartHandler}/>}
+          {!authCtx.isLoggedin && <Redirect to="/login"/>}
+        </Route>
+        <Route exact path="/store/:prodId">
+          {authCtx.isLoggedin && <ProductDetails />}
+          {!authCtx.isLoggedin && <Redirect to="/login"/>}
+        </Route>
+        <Route exact path="/about">
+          {authCtx.isLoggedin && <About/>}
+          {!authCtx.isLoggedin && <Redirect to="/login"/>}
+        </Route>
+        <Route exact path="/contact">
+          {authCtx.isLoggedin && <ContactUsPage/>}
+          {!authCtx.isLoggedin && <Redirect to="/login"/>}
+        </Route>
+        <Route exact path="/signup">
+          {authCtx.isLoggedin && <Redirect to="/store"/>}
+          {!authCtx.isLoggedin && <SignUpPage/>}
+        </Route>
+        <Route exact path="/login">
+          {authCtx.isLoggedin && <Redirect to="/store"/>}
+          {!authCtx.isLoggedin && <LoginPage/>}
+        </Route>
+        <Route exact path = "/">
+          {authCtx.isLoggedin && <Redirect to="/store"/>}
+          {!authCtx.isLoggedin && <Redirect to="/login"/>}
+        </Route>
+        <Route exact path="*">
+          {authCtx.isLoggedin && <Redirect to="/store"/>}
+          {!authCtx.isLoggedin && <LoginPage/>}
+        </Route>
       </Switch>
       <Footer/>
     </>

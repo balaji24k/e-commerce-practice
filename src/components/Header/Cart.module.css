@@ -3,6 +3,11 @@
     text-align: center;
 }
 
+.modal {
+    max-height: 450px;
+    overflow:scroll;
+}
+
 .quantity {
     color: white;
     margin-top: 4px;

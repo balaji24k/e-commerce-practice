@@ -11,9 +11,11 @@ const NavBar = (props) => {
 
   // console.log(authCtx.userEmail, "userEmail in navbar comp");
   const userName = authCtx.userEmail && authCtx.userEmail.split("@")[0];
+  console.log(userName,"userName")
 
   const totalQuantity = cartCtx.cartItems.reduce(
-    (sum, item) => sum + item.quantity ,0);
+    (sum, item) => sum + item.quantity,
+  0);
 
   return (
     <div>
@@ -77,6 +79,7 @@ const NavBar = (props) => {
                 </NavLink>
               </Navbar.Brand>
             </Col>
+            
             <Col className="col-1">
                 <Button onClick={props.showCartHandler}>Cart {totalQuantity}</Button>
             </Col>

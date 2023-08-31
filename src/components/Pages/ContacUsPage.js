@@ -10,20 +10,20 @@ const ContactUsPage = () => {
     e.preventDefault();
 
 		if (name.current.value.trim().length===0) {
-			alert("Enter Valid Name");
+			alert("Enter valid Name");
 		} else if (phoneNumber.current.value.toString().length !==10) {
 			alert("Enter valid Phone Number")
 		} else {
-			name.current.value = "";
-			phoneNumber.current.value = "";
-			alert("Request submitted, You will get a call from us within 10 minutes.");
+      name.current.value = "";
+      phoneNumber.current.value = "";
+      alert("Request submitted, You will get a call from us within 10 minutes.");
 		}
   };
 
   return (
     <div className={classes.box}>
-      <h2 className={classes.header} >Contact-Us</h2>
-			<h5 className={classes.header} >Fill this Details, you will get a call within 10 minutes.</h5>
+      <h3 className={classes.header} >Contact-Us</h3>
+			<h6 className={classes.header} >Fill the details if you are facing any issue, you will get a call within 10 minutes.</h6>
           <Form onSubmit={handleSubmit}>
             <Form.Group>
               <Form.Label className="mt-2">Name:</Form.Label>
@@ -52,7 +52,6 @@ const ContactUsPage = () => {
               </Button>
             </div>
           </Form>
-        
     </div>
   );
 };

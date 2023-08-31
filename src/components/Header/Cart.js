@@ -6,7 +6,6 @@ import CartContext from "../../store/CartContext";
 const Cart = (props) => {
   const cartCtx = useContext(CartContext);
   // console.log(cartCtx.cartItems,"cartItems in cart");
-    console.log(classes,"classes in cart");
 
   const totalPrice = cartCtx.cartItems.reduce(
     (totalPrice, item) => totalPrice + item.price * item.quantity, 0);
@@ -14,7 +13,10 @@ const Cart = (props) => {
   const hasItems = cartCtx.cartItems.length > 0;
 
   return (
-    <Modal show={props.showCart} onHide={props.hideCartHandler}>
+    <Modal 
+      className={classes.modal} 
+      show={props.showCart} 
+      onHide={props.hideCartHandler}>
       <Modal.Header closeButton>
         <Modal.Title>Cart Items</Modal.Title>
       </Modal.Header>

@@ -1,0 +1,21 @@
+.box {
+    margin-top: 150px;
+    height: 600px;
+    display: flex;
+    justify-content: center;
+}
+
+.heading {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.innerBox {
+    padding: 10px;
+}
+
+.childBtns {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-around;
+}
