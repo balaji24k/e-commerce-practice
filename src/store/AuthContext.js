@@ -28,7 +28,6 @@ export const AuthProvider = (props) => {
         alert("Logged out");
     }
 
-
     const obj = {
         login : loginHandler,
         logout : logoutHandler,

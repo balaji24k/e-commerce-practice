@@ -8,7 +8,6 @@ import AuthContext from "../../store/AuthContext";
 
 const LoginPage = () => {
   const authCtx = useContext(AuthContext);
-
   const history = useHistory();
 
   // console.log(history,"histoty login")

@@ -1,17 +1,21 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import CartContext from "./CartContext";
+import AuthContext from "./AuthContext";
 
 const CartProvider = (props) => {
     const [cartItems,setcartItems] = useState([]);
     const [isAddingToCart,setIsAddingToCart] = useState(false);
 
-    const userEmail = localStorage.getItem("email");
+    const authCtx = useContext(AuthContext);
+
+    const userEmail = authCtx.userEmail;
     let userName = userEmail && userEmail.split("@")[0];
     // console.log(userName,"userName in cartprovider")
 
     const url = `https://sep-2023-2c086-default-rtdb.firebaseio.com/e-commerce/${userName}`
 
     useEffect( () => {
+        console.log(userEmail, "user changed")
         const getDetails = async() => {
             const response = await fetch(`${url}.json`)
             const data = await response.json();
@@ -27,6 +31,7 @@ const CartProvider = (props) => {
 
     
     const addtoCartHandler = async (product) => {
+        setIsAddingToCart(product.prodId);
         console.log(product,"prod in add")
         const existingCartItemIndex = cartItems.findIndex(item => item.prodId === product.prodId);
         const existingCartItem = cartItems[existingCartItemIndex];
@@ -40,19 +45,19 @@ const CartProvider = (props) => {
 
             updatedCart = [...cartItems]
             updatedCart[existingCartItemIndex] = updatedItem;
-            setcartItems(updatedCart);
 
-            fetch(`${url}/${existingCartItem.id}.json`,{
+            await fetch(`${url}/${existingCartItem.id}.json`,{
                 method : "PUT",
                 body : JSON.stringify(updatedItem), 
                 headers : {
                     'Content-Type' : 'application/json'
                 }
             })
+            setIsAddingToCart(null);
+            setcartItems(updatedCart);
         }
 
         else{
-            setIsAddingToCart(product.prodId);
             const newItem = {...product,quantity:1}
             fetch(`${url}.json`,{
                 method : "POST",

@@ -1,4 +1,4 @@
-import { Container, Row, Col, Button } from "react-bootstrap";
+import { Container, Row, Col, Button, Spinner } from "react-bootstrap";
 import { useContext } from "react";
 import CartContext from "../../store/CartContext";
 import classes from "./ProductList.module.css";
@@ -31,17 +31,26 @@ const ShowProducts = (props) => {
                 <h5 className={classes.text}>
                   {`\u20B9`}{product.price}
                 </h5>
-                {cartCtx.isAddingToCart === product.prodId ? (
-                  <button className={classes.addToCartBtn}>Adding....</button>
-                ) : (
-                  <button
-                    className={classes.addToCartBtn}
-                    disabled={cartCtx.isAddingToCart}
-                    onClick={cartCtx.addtoCart.bind(null, product)}
-                  >
-                    Add to Cart
-                  </button>
-                )}
+                <button
+                  className={classes.addToCartBtn}
+                  disabled={cartCtx.isAddingToCart}
+                  onClick={cartCtx.addtoCart.bind(null, product)}
+                >
+                  {cartCtx.isAddingToCart === product.prodId ?
+                    <span>
+                      Adding
+                      <Spinner
+                          as="span"
+                          animation="border"
+                          size="sm"
+                          role="status"
+                          aria-hidden="true"
+                      />
+                    </span>
+                      : 
+                    "Add to Cart"
+                  }
+              </button>
               </div>
             </div>
           </Col>
