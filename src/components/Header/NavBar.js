@@ -9,9 +9,9 @@ const NavBar = (props) => {
   const cartCtx = useContext(CartContext);
   const authCtx = useContext(AuthContext);
 
-  // console.log(authCtx.userEmail, "userEmail in navbar comp");
+  // console.log(cartCtx.cartItems, "cart in navbar comp");
   const userName = authCtx.userEmail && authCtx.userEmail.split("@")[0];
-  console.log(userName,"userName")
+  // console.log(userName,"userName")
 
   const totalQuantity = cartCtx.cartItems.reduce(
     (sum, item) => sum + item.quantity,

@@ -1,149 +1,111 @@
 import { useContext, useEffect, useState } from "react";
 import CartContext from "./CartContext";
 import AuthContext from "./AuthContext";
+import useHttp from "../hooks/useHttp";
 
 const CartProvider = (props) => {
-    const [cartItems,setcartItems] = useState([]);
-    const [isAddingToCart,setIsAddingToCart] = useState(false);
+  const [cartItems, setcartItems] = useState([]);
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
 
-    const authCtx = useContext(AuthContext);
+  const sendRequest = useHttp();
+  const authCtx = useContext(AuthContext);
+  const userEmail = authCtx.userEmail;
 
-    const userEmail = authCtx.userEmail;
-    let userName = userEmail && userEmail.split("@")[0];
-    // console.log(userName,"userName in cartprovider")
-
-    const url = `https://sep-2023-2c086-default-rtdb.firebaseio.com/e-commerce/${userName}`
-
-    useEffect( () => {
-        console.log(userEmail, "user changed")
-        const getDetails = async() => {
-            const response = await fetch(`${url}.json`)
-            const data = await response.json();
-            const loadedProducts = []
-            for (const id in data) {
-                loadedProducts.push({id,...data[id]})
-            }
-            setcartItems(loadedProducts);
-        }
-        getDetails();
-
-    }, [userEmail,url])
-
-    
-    const addtoCartHandler = async (product) => {
-        setIsAddingToCart(product.prodId);
-        console.log(product,"prod in add")
-        const existingCartItemIndex = cartItems.findIndex(item => item.prodId === product.prodId);
-        const existingCartItem = cartItems[existingCartItemIndex];
-        
-        let updatedCart;
-        if (existingCartItem) {
-            const updatedItem = {
-                ...existingCartItem,
-                quantity : existingCartItem.quantity + 1
-            }
-
-            updatedCart = [...cartItems]
-            updatedCart[existingCartItemIndex] = updatedItem;
-
-            await fetch(`${url}/${existingCartItem.id}.json`,{
-                method : "PUT",
-                body : JSON.stringify(updatedItem), 
-                headers : {
-                    'Content-Type' : 'application/json'
-                }
-            })
-            setIsAddingToCart(null);
-            setcartItems(updatedCart);
-        }
-
-        else{
-            const newItem = {...product,quantity:1}
-            fetch(`${url}.json`,{
-                method : "POST",
-                body : JSON.stringify(newItem),
-                headers : {
-                    'Content-Type' : 'application/json'
-                }
-            })
-            .then(response => {
-                return response.json()    
-            })
-            .then(data => {
-                const updatedItem = {...newItem, id : data.name };
-                updatedCart = [...cartItems,updatedItem]
-                setcartItems(updatedCart);
-                setIsAddingToCart(null);
-            })
-        }
+  useEffect(() => {
+    const getDetails = async () => {
+      const data = await sendRequest();
+			let loadedProducts = []
+			if (data) {
+				loadedProducts = Object.keys(data).map(fbId => ({ fbId, ...data[fbId] }));
+			}
+      setcartItems(loadedProducts);
     };
+    userEmail && getDetails();
+  }, [userEmail, sendRequest]);
 
-    const removeFromCartHandler = async (product) => {
+	const updateCartItemHandler = async(updatingCartItem, quantityChange) => {
+		try {
+			const updatedItem = {
+        ...updatingCartItem,
+        quantity: updatingCartItem.quantity + quantityChange,
+      };
 
-        const itemIndex = cartItems.findIndex(item => item.prodId === product.prodId);
-        const item = cartItems[itemIndex];
-        // console.log(item,"item in delete")
+			await sendRequest({
+				method: "PUT",
+				body : updatedItem,
+				id : updatingCartItem.fbId
+			})
+			const updatedCart = cartItems.map((cartItem) =>
+				cartItem.id === updatingCartItem.id ? updatedItem : cartItem
+			);
+			setcartItems(updatedCart);
+      setIsAddingToCart(null);
+      
+		} catch (error) {
+			console.log(error,"updateCartItemHandler")
+		}
+	}
 
-        let updatedCart;
-        if (item.quantity === 1) {
-            updatedCart = cartItems.filter(item => item.prodId !== product.prodId);
-            setcartItems(updatedCart);
-            const response = await fetch(`${url}/${item.id}.json`,{
-                method : "Delete"
-            })
-            const data = await response.json();
-            console.log(data,"afterDelete")
-        }
+  const addtoCart = async (addingProduct) => {
+    setIsAddingToCart(addingProduct.id);
+    console.log(addingProduct, "prod in add");
+    const existingCartItem = cartItems.find(
+      (cartItem) => cartItem.id === addingProduct.id
+    );
 
-        else{
-            const updatedItem = {
-                ...item,
-                quantity : item.quantity-1
-            }
+    if (!existingCartItem) {
+			const newItem = { ...addingProduct, quantity: 1 };
+			const data = await sendRequest({
+				method : "POST",
+				body : newItem
+			})
+			const newItemWithId = {...newItem, fbId : data.name};
+			setcartItems([...cartItems,newItemWithId]);
+			setIsAddingToCart(null);
+			return;
+    } 
+		updateCartItemHandler(existingCartItem,1);
+  };
 
-            updatedCart = [...cartItems];
-            updatedCart[itemIndex] = updatedItem;
-            setcartItems(updatedCart);
+  const removeFromCart = async (product) => {
+    const deleteItem = cartItems.find(
+      (cartItem) => cartItem.id === product.id
+    );
 
-            const response = await fetch(`${url}/${item.id}.json`,{
-                method : "PUT",
-                body : JSON.stringify(updatedItem), 
-                headers : {
-                    'Content-Type' : 'application/json'
-                }
-            })
-            const data = await response.json();
-            console.log(data,"afterDecreseQuantity")
-        }
-    };
+    if (deleteItem.quantity === 1) {
+      const updatedCart = cartItems.filter((item) => item.id !== deleteItem.id);
+      setcartItems(updatedCart);
 
-    const checkOutHandler = () => {
-        if (cartItems.length === 0) {
-            alert("No items added, Add items to place Order.");
-            return;
-        }
-        setcartItems([]);
-        fetch(`${url}.json`,{
-            method : "Delete"
-        });
-        alert("Order Placed Succefully.");
+			await sendRequest({
+				method: "Delete",
+				id : deleteItem.fbId
+			})
+			return;
+    } 
+		updateCartItemHandler(deleteItem, -1);
+  };
 
+  const checkOutHandler = async() => {
+    if (cartItems.length === 0) {
+      alert("No items added, Add items to place Order.");
+      return;
     }
+		await sendRequest({method:"DELETE"});
+    setcartItems([]);
+    alert("Order Placed Succefully.");
+  };
 
-    const obj = {
-        cartItems : cartItems,
-        addtoCart : addtoCartHandler,
-        removeFromCart : removeFromCartHandler,
-        isAddingToCart : isAddingToCart,
-        checkOutHandler : checkOutHandler
-    }
+  const obj = {
+    cartItems,
+    addtoCart,
+    removeFromCart,
+    isAddingToCart,
+    checkOutHandler
+  };
 
-    return (
-        <CartContext.Provider value={obj} >
-            {props.children}
-        </CartContext.Provider>
-    )
-
-}
+  return (
+    <CartContext.Provider value={obj}>{props.children}</CartContext.Provider>
+  );
+};
 
 export default CartProvider;

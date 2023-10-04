@@ -3,12 +3,14 @@ import { useContext } from "react";
 import ProductsContext from "../../store/ProductContext";
 
 const ProductList = (props) => {
-  const productCtx = useContext(ProductsContext);
+  const { products } = useContext(ProductsContext);
+
   return (
     <div>
-      <h1 style={{textAlign:"center", fontFamily:"fantasy", marginTop:"70px"}} >Mobiles</h1>
+      {/* <h1 style={{textAlign:"center", fontFamily:"fantasy", marginTop:"70px"}} >Mobiles</h1> */}
       <ShowProducts
-        productList={productCtx.products} 
+        products={products}
+        // productList={productCtx.products} 
         showCartHandler={props.showCartHandler}
       />
     </div>

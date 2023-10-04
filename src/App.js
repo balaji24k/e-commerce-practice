@@ -4,7 +4,6 @@ import Footer from './components/Footer/Footer';
 import NavBar from "./components/Header/NavBar";
 import ProductList from "./components/Products/ProductList";
 import { Switch, Route, Redirect} from 'react-router-dom';
-import SignUpPage from './components/Authentication/SignUpPage';
 import LoginPage from './components/Authentication/LoginPage';
 import { useContext, useState } from 'react';
 import Home from './components/Pages/Home';
@@ -12,6 +11,7 @@ import About from './components/Pages/About';
 import AuthContext from './store/AuthContext';
 import ContactUsPage from './components/Pages/ContacUsPage';
 import ProductDetails from './components/Pages/ProductDetails';
+import SignupPage from "./components/Authentication/SignupPage"
 
 function App() {
 
@@ -43,7 +43,7 @@ function App() {
           {authCtx.isLoggedin && <ProductList showCartHandler={showCartHandler}/>}
           {!authCtx.isLoggedin && <Redirect to="/login"/>}
         </Route>
-        <Route exact path="/store/:prodId">
+        <Route exact path="/store/:id">
           {authCtx.isLoggedin && <ProductDetails />}
           {!authCtx.isLoggedin && <Redirect to="/login"/>}
         </Route>
@@ -57,7 +57,7 @@ function App() {
         </Route>
         <Route exact path="/signup">
           {authCtx.isLoggedin && <Redirect to="/store"/>}
-          {!authCtx.isLoggedin && <SignUpPage/>}
+          {!authCtx.isLoggedin && <SignupPage/>}
         </Route>
         <Route exact path="/login">
           {authCtx.isLoggedin && <Redirect to="/store"/>}

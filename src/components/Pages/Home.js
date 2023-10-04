@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  Table,
-  Button,
-  NavLink
-} from "react-bootstrap";
+import { Table, Button, NavLink } from "react-bootstrap";
 import classes from "./Home.module.css";
 
 const tours = [
@@ -30,22 +26,22 @@ const Home = () => {
       </div>
 
       <h3 className={classes.h3}>TOURS</h3>
-      <div style={{marginBottom:"100px"}}>
+      <div style={{ marginBottom: "100px" }}>
         <Table className="border d-grid align-items-center justify-content-center">
-            <tbody>
-            {tours.map((tour,id) => (
-                <tr key={id}>
+          <tbody>
+            {tours.map((tour, id) => (
+              <tr key={id}>
                 <td>{tour.date}</td>
                 <td>{tour.city}</td>
                 <td>{tour.venue}</td>
                 <td>
-                    <Button className="btn-dark btn-outline-info">
+                  <Button className="btn-dark btn-outline-info">
                     BUY TICKET
-                    </Button>
+                  </Button>
                 </td>
-                </tr>
+              </tr>
             ))}
-            </tbody>
+          </tbody>
         </Table>
       </div>
     </>

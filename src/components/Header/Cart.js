@@ -5,10 +5,10 @@ import CartContext from "../../store/CartContext";
 
 const Cart = (props) => {
   const cartCtx = useContext(CartContext);
-  // console.log(cartCtx.cartItems,"cartItems in cart");
+  console.log(cartCtx.cartItems,"cartItems in cart");
 
   const totalPrice = cartCtx.cartItems.reduce(
-    (totalPrice, item) => totalPrice + item.price * item.quantity, 0);
+    (totalPrice, item) => totalPrice + item.price * item.quantity, 0).toFixed(2);
 
   const hasItems = cartCtx.cartItems.length > 0;
 
@@ -33,9 +33,9 @@ const Cart = (props) => {
             </thead>
             <tbody>
               {cartCtx.cartItems.map((item) => (
-                <tr key={item.title}>
+                <tr key={item.id}>
                   <td>
-                    <img width="80px" alt="Not Loaded" src={item.imageUrl} />
+                    <img width="80px" alt="Not Loaded" src={item.image} />
                   </td>
                   <td>{item.title}</td>
                   <td>{item.price}</td>

@@ -6,7 +6,7 @@ import { NavLink } from "react-router-dom";
 
 const ShowProducts = (props) => {
 	const cartCtx = useContext(CartContext);
-	const products = props.productList;
+	const { products } = props;
 
   // console.log(cartCtx.cartItems,"cartItems arr in showProd");
 	
@@ -14,16 +14,19 @@ const ShowProducts = (props) => {
     <Container className={classes.productBox}>
       <Row>
         {products.map((product) => (
-          <Col key={product.title} className="col-6">
+          <Col key={product.title} className="col-3">
             <div className={classes.item}>
-              <h4 className={classes.text}>{product.title}</h4>
+              <div className={classes.title} >
+                <p className={classes.text}>{product.title}</p>
+              </div>
               <NavLink 
                 className={classes.itemNavlink} 
-                to={`/store/${product.prodId}`} 
+                to={`/store/${product.id}`} 
               >
                 <img 
-                  width="250px" 
-                  src={product.imageUrl} 
+                  width="200px" 
+                  height="300px"
+                  src={product.image} 
                   alt="Not Loaded" 
                 />
               </NavLink>
@@ -36,7 +39,7 @@ const ShowProducts = (props) => {
                   disabled={cartCtx.isAddingToCart}
                   onClick={cartCtx.addtoCart.bind(null, product)}
                 >
-                  {cartCtx.isAddingToCart === product.prodId ?
+                  {cartCtx.isAddingToCart === product.id ?
                     <span>
                       Adding
                       <Spinner
